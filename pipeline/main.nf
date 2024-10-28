@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-// hash:sha256:40f00139b09f9f705b674468d204304c974df976cd2ee4461e25f5579bad38e1
+// hash:sha256:e09d86e27becaeb11152a4f7573b92cac1950a6462e4d50c1258da9b2f0ddbc1
 
 nextflow.enable.dsl = 1
 
@@ -263,7 +263,7 @@ process capsule_aind_ephys_visualization_6 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-6668112.git" capsule-repo
-	git -C capsule-repo checkout 4279f309927a1e3ad3df3a4142e45ae59644785a --quiet
+	git -C capsule-repo checkout a98261334e7547a761ba26eaecf4c7e2e7e4a0da --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -407,7 +407,7 @@ process capsule_aind_ephys_results_collector_9 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-4820071.git" capsule-repo
-	git -C capsule-repo checkout 2dcc8b7d9089d2c0069aa163b6be8992b02628a5 --quiet
+	git -C capsule-repo checkout dea3ac29ac8e82322b2a4488b56b6720861cc80a --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
