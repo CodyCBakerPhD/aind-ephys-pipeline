@@ -263,7 +263,7 @@ process spikesort_kilosort25 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-kilosort25.git" capsule-repo
-	git -C capsule-repo -c core.fileMode=false checkout c7b2d11ea0c258a0d07c28c105d365553ccfaf43 --quiet
+	git -C capsule-repo -c core.fileMode=false checkout 8c8987260a27c75b1f523d306b40a16962a97ea6 --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -315,7 +315,7 @@ process spikesort_kilosort4 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-kilosort4.git" capsule-repo
-	git -C capsule-repo -c core.fileMode=false checkout 2183dc930959c4e8007f7a8fbcc04f0fc72648ab --quiet
+	git -C capsule-repo -c core.fileMode=false checkout 6b4e6cd5bf90e05be7ce7e2de9a28f4dcfa02c29 --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -364,7 +364,7 @@ process spikesort_spykingcircus2 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-spykingcircus2.git" capsule-repo
-	git -C capsule-repo -c core.fileMode=false checkout 6f4ea112127d1727ba81040cf1563bcf9a40ca7d --quiet
+	git -C capsule-repo -c core.fileMode=false checkout 1f88d6741e33bf9a0e6e23107c64f3c7ad17b5e4 --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
