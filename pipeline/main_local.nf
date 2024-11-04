@@ -86,7 +86,6 @@ if (runmode == 'fast'){
 	postprocessing_args = "--skip-extensions spike_locations,principal_components"
 	unit_classifier_args = "--skip-metrics-recomputation"
 	nwb_ecephys_args = "--skip-lfp"
-	println params
 	println "Running in fast mode. Setting parameters:"
 	println "preprocessing_args: ${preprocessing_args}"
 	println "postprocessing_args: ${postprocessing_args}"
