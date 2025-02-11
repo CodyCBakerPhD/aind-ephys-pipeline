@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-// hash:sha256:3259c9e51b0181d9ff96162dc0c009d6068a1c3d6755dd5f2fb069fb1f02ea66
+// hash:sha256:3da3d34e70989dd9c8cc86a1aeae75c4469aa3347f04b62282a81d11c7b2399f
 
 nextflow.enable.dsl = 1
 
@@ -556,8 +556,8 @@ process capsule_quality_control_collector_ecephys_13 {
 
 // capsule - Quality Control Ecephys
 process capsule_quality_control_ecephys_14 {
-	tag 'capsule-4947581'
-	container "$REGISTRY_HOST/capsule/c388ff39-2a17-4290-9f2d-1203702638a8"
+	tag 'capsule-1934203'
+	container "$REGISTRY_HOST/capsule/e20ef81f-29bf-4ee9-ac65-f8e215614696"
 
 	cpus 8
 	memory '64 GB'
@@ -575,7 +575,7 @@ process capsule_quality_control_ecephys_14 {
 	#!/usr/bin/env bash
 	set -e
 
-	export CO_CAPSULE_ID=c388ff39-2a17-4290-9f2d-1203702638a8
+	export CO_CAPSULE_ID=e20ef81f-29bf-4ee9-ac65-f8e215614696
 	export CO_CPUS=8
 	export CO_MEMORY=68719476736
 
@@ -585,7 +585,7 @@ process capsule_quality_control_ecephys_14 {
 	mkdir -p capsule/scratch && ln -s \$PWD/capsule/scratch /scratch
 
 	echo "[${task.tag}] cloning git repo..."
-	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-4947581.git" capsule-repo
+	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-1934203.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
