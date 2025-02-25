@@ -1,7 +1,9 @@
 name: Test Nextflow Pipeline
 
-on: [push, pull_request]
-
+on:
+  pull_request:
+      branches: [main]
+      types: [synchronize, opened, reopened]
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -22,7 +24,7 @@ jobs:
 
         - name: Generate test NWB files
           run: |
-            python ./sample_datasets/create_test_nwb.py
+            python sample_datasets/create_test_nwb.py
         
         - name: Set up Nextflow
           uses: nf-core/setup-nextflow@v1
@@ -31,6 +33,6 @@ jobs:
 
         - name: Run Nextflow pipeline
           run: |
-            DATA_PATH="./sample_dataset/nwb" RESULTS_PATH="./sample_dataset/nwb/results" nextflow \
-            -C ./pipeline/nextflow_local.config run ./pipeline/main_local.nf \
+            DATA_PATH="sample_dataset/nwb" RESULTS_PATH="sample_dataset/nwb/results" nextflow \
+            -C pipeline/nextflow_local.config run pipeline/main_local.nf \
             --sorter kilosort4 --job_dispatch_args "--input nwb"
