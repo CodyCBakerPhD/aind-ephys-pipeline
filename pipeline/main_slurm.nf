@@ -41,9 +41,6 @@ if (!params_keys.contains('spikesorting_args')) {
 if (!params_keys.contains('postprocessing_args')) {
 	params.postprocessing_args = ""
 }
-if (!params_keys.contains('unit_classifier_args')) {
-	params.unit_classifier_args = ""
-}
 if (!params_keys.contains('nwb_subject_args')) {
 	params.nwb_subject_args = ""
 }
@@ -54,12 +51,10 @@ if (!params_keys.contains('nwb_ecephys_args')) {
 if (runmode == 'fast'){
 	params.preprocessing_args = "--motion skip"
 	params.postprocessing_args = "--skip-extensions spike_locations,principal_components"
-	params.unit_classifier_args = "--skip-metrics-recomputation"
 	params.nwb_ecephys_args = "--skip-lfp"
 	println "Running in fast mode. Setting parameters:"
 	println "preprocessing_args: ${params.preprocessing_args}"
 	println "postprocessing_args: ${params.postprocessing_args}"
-	println "unit_classifier_args: ${params.unit_classifier_args}"
 	println "nwb_ecephys_args: ${params.nwb_ecephys_args}"
 }
 
@@ -75,7 +70,6 @@ spikesort_spykingcircus2_to_postprocessing = channel.create()
 preprocessing_to_postprocessing = channel.create()
 job_dispatch_to_postprocessing = channel.create()
 job_dispatch_to_visualization = channel.create()
-unit_classifier_to_visualization = channel.create()
 preprocessing_to_visualization = channel.create()
 curation_to_visualization = channel.create()
 spikesort_kilosort25_to_visualization = channel.create()
@@ -86,7 +80,6 @@ ecephys_to_visualization = channel.fromPath(params.ecephys_path + "/", type: 'an
 preprocessing_to_spikesort_kilosort25 = channel.create()
 preprocessing_to_spikesort_kilosort4 = channel.create()
 preprocessing_to_spikesort_spykingcircus2 = channel.create()
-postprocessing_to_unit_classifier = channel.create()
 job_dispatch_to_results_collector = channel.create()
 preprocessing_to_results_collector = channel.create()
 spikesort_kilosort25_to_results_collector = channel.create()
@@ -94,7 +87,6 @@ spikesort_kilosort4_to_results_collector = channel.create()
 spikesort_spykingcircus2_to_results_collector = channel.create()
 postprocessing_to_results_collector = channel.create()
 curation_to_results_collector = channel.create()
-unit_classifier_to_results_collector = channel.create()
 visualization_to_results_collector = channel.create()
 ecephys_to_collect_results = channel.fromPath(params.ecephys_path + "/", type: 'any')
 ecephys_to_nwb_subject = channel.fromPath(params.ecephys_path + "/", type: 'any')
@@ -400,7 +392,6 @@ process postprocessing {
 	output:
 	path 'capsule/results/*' into postprocessing_to_curation
 	path 'capsule/results/*' into postprocessing_to_visualization
-	path 'capsule/results/*' into postprocessing_to_unit_classifier
 	path 'capsule/results/*' into postprocessing_to_results_collector
 
 	script:
@@ -476,52 +467,6 @@ process curation {
 	"""
 }
 
-// capsule - Unit Classifier Ecephys
-process unit_classifier {
-	tag 'unit-classifier'
-	container 'ghcr.io/allenneuraldynamics/aind-ephys-unit-classifier:si-0.101.2'
-
-	cpus 4
-	memory '32 GB'
-	// Allocate 30min per recording hour. Minimum 10m
-	time { max_duration_min.value.toFloat()*0.5 > 10 ? max_duration_min.value.toFloat()*0.5 + 'm' : '10m' }
-
-	input:
-	env max_duration_min
-	path 'capsule/data/' from postprocessing_to_unit_classifier
-
-	output:
-	path 'capsule/results/*' into unit_classifier_to_visualization
-	path 'capsule/results/*' into unit_classifier_to_results_collector
-
-	script:
-	"""
-	#!/usr/bin/env bash
-	set -e
-
-	mkdir -p capsule
-	mkdir -p capsule/data
-	mkdir -p capsule/results
-	mkdir -p capsule/scratch
-
-	echo "[${task.tag}] cloning git repo..."
-	git clone "https://github.com/AllenNeuralDynamics/aind-ephys-unit-classifier.git" capsule-repo
-	git -C capsule-repo -c core.fileMode=false checkout f63d867b582d2ea199db50ac1c4867fe6f578dde --quiet
-	mv capsule-repo/code capsule/code
-	rm -rf capsule-repo
-
-	echo "[${task.tag}] allocated time: ${task.time}"
-
-
-	echo "[${task.tag}] running capsule..."
-	cd capsule/code
-	chmod +x run
-	./run ${params.unit_classifier_args}
-
-	echo "[${task.tag}] completed!"
-	"""
-}
-
 // capsule - Visualize Ecephys
 process visualization {
 	tag 'visualization'
@@ -535,7 +480,6 @@ process visualization {
 	input:
 	env max_duration_min
 	path 'capsule/data/' from job_dispatch_to_visualization.collect()
-	path 'capsule/data/' from unit_classifier_to_visualization.collect()
 	path 'capsule/data/' from preprocessing_to_visualization
 	path 'capsule/data/' from curation_to_visualization.collect()
 	path 'capsule/data/' from spikesort_to_visualization.collect()
@@ -593,7 +537,6 @@ process results_collector {
 	path 'capsule/data/' from spikesort_to_results_collector.collect()
 	path 'capsule/data/' from postprocessing_to_results_collector.collect()
 	path 'capsule/data/' from curation_to_results_collector.collect()
-	path 'capsule/data/' from unit_classifier_to_results_collector.collect()
 	path 'capsule/data/' from visualization_to_results_collector.collect()
 	path 'capsule/data/ecephys_session' from ecephys_to_collect_results.collect()
 
