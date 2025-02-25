@@ -22,13 +22,9 @@ jobs:
             python -m pip install --upgrade pip
             pip install spikeinterface neuroconv pynwb
 
-        - name: LS
-          run: |
-            ls
-
         - name: Generate test NWB files
           run: |
-            python ../sample_datasets/create_test_nwb.py
+            python sample_dataset/create_test_nwb.py
         
         - name: Set up Nextflow
           uses: nf-core/setup-nextflow@v1
