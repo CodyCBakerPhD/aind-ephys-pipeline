@@ -11,7 +11,8 @@
 
 ### New features:
 * Removed unit classifier process (moved to curation)
-* Automated image deployments
+* Centralized capsule verions
+* Added CI tests and automated deployments
 
 
 ## si-0.101.2 - November 2024
