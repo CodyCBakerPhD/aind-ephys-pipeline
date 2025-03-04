@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input and Output &mdash; AIND Ephys Pipeline 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pipeline Parameters" href="parameters.html" />
+    <link rel="prev" title="Pipeline Steps" href="pipeline_steps.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AIND Ephys Pipeline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#key-concepts">Key concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#key-features">Key Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#local-deployment">Local Deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#slurm-deployment">SLURM Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#local-setup">Local Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#slurm-setup">SLURM Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#clone-the-repository">Clone the Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_steps.html">Pipeline Steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#job-dispatch">Job Dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#preprocessing">Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#spike-sorting">Spike Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#postprocessing">Postprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#curation">Curation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#result-collection">Result Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#nwb-export">NWB Export</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input and Output</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-data-types">Input Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spikeglx">SpikeGLX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#open-ephys">Open Ephys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nwb">NWB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aind">AIND</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pipeline-output">Pipeline Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preprocessed">preprocessed/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spikesorted">spikesorted/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postprocessed">postprocessed/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#curated">curated/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">nwb/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">visualization/</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-files">Additional Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Pipeline Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#global-parameters">Global Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#process-specific-parameters">Process-Specific Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#job-dispatch-parameters">Job Dispatch Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#preprocessing-parameters">Preprocessing Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#spike-sorting-parameters">Spike Sorting Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#nwb-subject-parameters">NWB Subject Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#nwb-ecephys-parameters">NWB Ecephys Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#example-usage">Example Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployments.html">Deployment Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployments.html#local-deployment">Local Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#running-locally">Running Locally</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployments.html#slurm-deployment">SLURM Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#id1">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#submission-script">Submission Script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployments.html#code-ocean-deployment-aind">Code Ocean Deployment (AIND)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#main-branches">Main Branches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployments.html#optogenetics-branches">Optogenetics Branches</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployments.html#custom-data-ingestion">Custom Data Ingestion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.100.7.html">si-0.100.7 - February 2024</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.100.7.html#package-versions">Package versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.101.2.html">si-0.101.2 - November 2024</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#package-versions">Package versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#new-features">New features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.102.1.html">si-0.102.1 - March 2025</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#package-versions">Package versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#new-features">New features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AIND Ephys Pipeline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Input and Output</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/input_output.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="input-and-output">
+<h1>Input and Output<a class="headerlink" href="#input-and-output" title="Link to this heading"></a></h1>
+<section id="input-data-types">
+<h2>Input Data Types<a class="headerlink" href="#input-data-types" title="Link to this heading"></a></h2>
+<p>The pipeline supports several input data formats:</p>
+<section id="spikeglx">
+<h3>SpikeGLX<a class="headerlink" href="#spikeglx" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Input folder should contain a SpikeGLX saved folder</p></li>
+<li><p>Recommended: Include <code class="docutils literal notranslate"><span class="pre">subject.json</span></code> and <code class="docutils literal notranslate"><span class="pre">data_description.json</span></code> following <a class="reference external" href="https://aind-data-schema.readthedocs.io/en/latest/">aind-data-schema</a> specification</p></li>
+</ul>
+</section>
+<section id="open-ephys">
+<h3>Open Ephys<a class="headerlink" href="#open-ephys" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Input folder should contain an Open Ephys folder</p></li>
+<li><p>Recommended: Include <code class="docutils literal notranslate"><span class="pre">subject.json</span></code> and <code class="docutils literal notranslate"><span class="pre">data_description.json</span></code> following <a class="reference external" href="https://aind-data-schema.readthedocs.io/en/latest/">aind-data-schema</a> specification</p></li>
+</ul>
+</section>
+<section id="nwb">
+<h3>NWB<a class="headerlink" href="#nwb" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Input folder should contain a single NWB file</p></li>
+<li><p>Supports both HDF5 and Zarr backends</p></li>
+</ul>
+</section>
+<section id="aind">
+<h3>AIND<a class="headerlink" href="#aind" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Used for AIND-specific data ingestion</p></li>
+<li><dl class="simple">
+<dt>Input folder structure:</dt><dd><ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ecephys/</span></code> directory containing:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ecephys_clipped/</span></code> (clipped Open Ephys folder)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ecephys_compressed/</span></code> (compressed traces with Zarr)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>JSON files following <a class="reference external" href="https://aind-data-schema.readthedocs.io/en/latest/">aind-data-schema</a> specification</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="pipeline-output">
+<h2>Pipeline Output<a class="headerlink" href="#pipeline-output" title="Link to this heading"></a></h2>
+<p>The pipeline output is organized in the <code class="docutils literal notranslate"><span class="pre">RESULTS_PATH</span></code> directory with the following structure:</p>
+<section id="preprocessed">
+<h3>preprocessed/<a class="headerlink" href="#preprocessed" title="Link to this heading"></a></h3>
+<p>Contains preprocessing outputs:</p>
+<ul class="simple">
+<li><p>Preprocessed JSON files for each stream</p></li>
+<li><p>Motion folders with estimated motion</p></li>
+<li><p>Can be loaded with SpikeInterface:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spikeinterface</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">si</span>
+<span class="n">recording_preprocessed</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+   <span class="s2">&quot;path-to-preprocessed.json&quot;</span><span class="p">,</span>
+   <span class="n">base_folder</span><span class="o">=</span><span class="s2">&quot;path-to-raw-data-parent&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Load motion data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spikeinterface.preprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">spre</span>
+<span class="n">motion_info</span> <span class="o">=</span> <span class="n">spre</span><span class="o">.</span><span class="n">load_motion_info</span><span class="p">(</span><span class="s2">&quot;path-to-motion-folder&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spikesorted">
+<h3>spikesorted/<a class="headerlink" href="#spikesorted" title="Link to this heading"></a></h3>
+<p>Contains raw spike sorting output:</p>
+<ul class="simple">
+<li><p>One folder per stream</p></li>
+<li><p>Can be loaded as:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spikeinterface</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">si</span>
+<span class="n">sorting_raw</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path-to-spikesorted-folder&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="postprocessed">
+<h3>postprocessed/<a class="headerlink" href="#postprocessed" title="Link to this heading"></a></h3>
+<p>Contains postprocessing output in Zarr format:</p>
+<ul class="simple">
+<li><p>One folder per stream</p></li>
+<li><p>Load with SpikeInterface:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spikeinterface</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">si</span>
+<span class="n">sorting_analyzer</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path-to-postprocessed-folder.zarr&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access extensions</span>
+<span class="n">unit_locations</span> <span class="o">=</span> <span class="n">sorting_analyzer</span><span class="o">.</span><span class="n">get_extension</span><span class="p">(</span><span class="s2">&quot;unit_locations&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+<span class="n">qm</span> <span class="o">=</span> <span class="n">sorting_analyzer</span><span class="o">.</span><span class="n">get_extension</span><span class="p">(</span><span class="s2">&quot;quality_metrics&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="curated">
+<h3>curated/<a class="headerlink" href="#curated" title="Link to this heading"></a></h3>
+<p>Contains curated spike sorting outputs:</p>
+<ul class="simple">
+<li><p>Includes unit deduplication and quality metric-based curation</p></li>
+<li><p>Unit classification results</p></li>
+<li><p>Load with SpikeInterface:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spikeinterface</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">si</span>
+<span class="n">sorting_curated</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path-to-curated-folder&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access curation properties</span>
+<span class="n">default_qc</span> <span class="o">=</span> <span class="n">sorting_curated</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;default_qc&quot;</span><span class="p">)</span>  <span class="c1"># True/False for QC pass</span>
+<span class="n">decoder_label</span> <span class="o">=</span> <span class="n">sorting_curated</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;decoder_label&quot;</span><span class="p">)</span>  <span class="c1"># noise/MUA/SUA</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>nwb/<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>Contains generated NWB files:</p>
+<ul class="simple">
+<li><p>One NWB file per block/segment</p></li>
+<li><p>Includes all streams for that block/segment</p></li>
+<li><dl class="simple">
+<dt>Contains:</dt><dd><ul>
+<li><p>Session/subject information</p></li>
+<li><p>Ecephys metadata</p></li>
+<li><p>LFP signals (optional)</p></li>
+<li><p>Units data</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="visualization">
+<h3>visualization/<a class="headerlink" href="#visualization" title="Link to this heading"></a></h3>
+<p>Contains generated visualizations:</p>
+<ul class="simple">
+<li><p>Drift maps</p></li>
+<li><p>Motion plots</p></li>
+<li><p>Sample traces for all streams</p></li>
+</ul>
+</section>
+</section>
+<section id="additional-files">
+<h2>Additional Files<a class="headerlink" href="#additional-files" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">visualization_output.json</span></code>: Contains Figurl links for each stream</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processing.json</span></code>: Logs processing steps, parameters, and execution times</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nextflow/</span></code>: Contains all Nextflow-generated files</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pipeline_steps.html" class="btn btn-neutral float-left" title="Pipeline Steps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parameters.html" class="btn btn-neutral float-right" title="Pipeline Parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AIND.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

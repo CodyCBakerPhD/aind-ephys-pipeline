@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deployment Options &mdash; AIND Ephys Pipeline 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Releases" href="releases.html" />
+    <link rel="prev" title="Pipeline Parameters" href="parameters.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AIND Ephys Pipeline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#key-concepts">Key concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#key-features">Key Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#local-deployment">Local Deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#slurm-deployment">SLURM Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#local-setup">Local Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#slurm-setup">SLURM Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#clone-the-repository">Clone the Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_steps.html">Pipeline Steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#job-dispatch">Job Dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#preprocessing">Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#spike-sorting">Spike Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#postprocessing">Postprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#curation">Curation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#result-collection">Result Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline_steps.html#nwb-export">NWB Export</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Input and Output</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_output.html#input-data-types">Input Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#spikeglx">SpikeGLX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#open-ephys">Open Ephys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#nwb">NWB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#aind">AIND</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_output.html#pipeline-output">Pipeline Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#preprocessed">preprocessed/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#spikesorted">spikesorted/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#postprocessed">postprocessed/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#curated">curated/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#id3">nwb/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_output.html#visualization">visualization/</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_output.html#additional-files">Additional Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Pipeline Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#global-parameters">Global Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#process-specific-parameters">Process-Specific Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#job-dispatch-parameters">Job Dispatch Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#preprocessing-parameters">Preprocessing Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#spike-sorting-parameters">Spike Sorting Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#nwb-subject-parameters">NWB Subject Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameters.html#nwb-ecephys-parameters">NWB Ecephys Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html#example-usage">Example Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#local-deployment">Local Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-locally">Running Locally</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#slurm-deployment">SLURM Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-script">Submission Script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#code-ocean-deployment-aind">Code Ocean Deployment (AIND)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-branches">Main Branches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optogenetics-branches">Optogenetics Branches</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-data-ingestion">Custom Data Ingestion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.100.7.html">si-0.100.7 - February 2024</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.100.7.html#package-versions">Package versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.101.2.html">si-0.101.2 - November 2024</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#package-versions">Package versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.101.2.html#new-features">New features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases/si-0.102.1.html">si-0.102.1 - March 2025</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#package-versions">Package versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="releases/si-0.102.1.html#new-features">New features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AIND Ephys Pipeline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deployment Options</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deployments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deployment-options">
+<h1>Deployment Options<a class="headerlink" href="#deployment-options" title="Link to this heading"></a></h1>
+<p>The pipeline can be deployed in several environments:</p>
+<section id="local-deployment">
+<h2>Local Deployment<a class="headerlink" href="#local-deployment" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While local deployment is possible, it’s recommended to use SLURM or batch processing systems for better performance.
+Local deployment limits parallelization of resource-intensive processes to avoid system overload.</p>
+</div>
+<section id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
+<p>See the <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> page for detailed setup instructions.</p>
+</section>
+<section id="running-locally">
+<h3>Running Locally<a class="headerlink" href="#running-locally" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Clone the repository:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/AllenNeuralDynamics/aind-ephys-pipeline.git
+<span class="nb">cd</span><span class="w"> </span>aind-ephys-pipeline/pipeline
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Run the pipeline:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">NXF_VER</span><span class="o">=</span><span class="m">22</span>.10.8<span class="w"> </span><span class="nv">DATA_PATH</span><span class="o">=</span><span class="nv">$PWD</span>/../data<span class="w"> </span><span class="nv">RESULTS_PATH</span><span class="o">=</span><span class="nv">$PWD</span>/../results<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>nextflow<span class="w"> </span>-C<span class="w"> </span>nextflow_local.config<span class="w"> </span>-log<span class="w"> </span><span class="nv">$RESULTS_PATH</span>/nextflow/nextflow.log<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>main_local.nf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--n_jobs<span class="w"> </span><span class="m">8</span><span class="w"> </span>-resume
+</pre></div>
+</div>
+</section>
+</section>
+<section id="slurm-deployment">
+<h2>SLURM Deployment<a class="headerlink" href="#slurm-deployment" title="Link to this heading"></a></h2>
+<p>Deploying on a SLURM cluster provides better performance and resource management.</p>
+<section id="id1">
+<h3>Requirements<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Access to a SLURM cluster</p></li>
+<li><p>Nextflow installation</p></li>
+<li><p>Singularity/Apptainer installation</p></li>
+<li><p>Optional: Figurl setup for visualizations</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Copy and modify the SLURM configuration:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>pipeline/nextflow_slurm.config<span class="w"> </span>pipeline/nextflow_slurm_custom.config
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">queue</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">nextflow_slurm_custom.config</span></code> to match your cluster’s partition.</p></li>
+</ol>
+</section>
+<section id="submission-script">
+<h3>Submission Script<a class="headerlink" href="#submission-script" title="Link to this heading"></a></h3>
+<p>Create a submission script (<code class="docutils literal notranslate"><span class="pre">slurm_submit.sh</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --nodes=1</span>
+<span class="c1">#SBATCH --ntasks-per-node=1</span>
+<span class="c1">#SBATCH --mem=4GB</span>
+<span class="c1">#SBATCH --time=2:00:00</span>
+<span class="c1">#SBATCH --partition=your-partition</span>
+
+<span class="c1"># Load required environment</span>
+conda<span class="w"> </span>activate<span class="w"> </span>env_nf
+
+<span class="nv">PIPELINE_PATH</span><span class="o">=</span><span class="s2">&quot;path-to-your-cloned-repo&quot;</span>
+<span class="nv">DATA_PATH</span><span class="o">=</span><span class="s2">&quot;path-to-data-folder&quot;</span>
+<span class="nv">RESULTS_PATH</span><span class="o">=</span><span class="s2">&quot;path-to-results-folder&quot;</span>
+<span class="nv">WORKDIR</span><span class="o">=</span><span class="s2">&quot;path-to-large-workdir&quot;</span>
+
+<span class="nv">NXF_VER</span><span class="o">=</span><span class="m">22</span>.10.8<span class="w"> </span><span class="nv">DATA_PATH</span><span class="o">=</span><span class="nv">$DATA_PATH</span><span class="w"> </span><span class="nv">RESULTS_PATH</span><span class="o">=</span><span class="nv">$RESULTS_PATH</span><span class="w"> </span>nextflow<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-C<span class="w"> </span><span class="nv">$PIPELINE_PATH</span>/pipeline/nextflow_slurm_custom.config<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-log<span class="w"> </span><span class="nv">$RESULTS_PATH</span>/nextflow/nextflow.log<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="nv">$PIPELINE_PATH</span>/pipeline/main_slurm.nf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-work-dir<span class="w"> </span><span class="nv">$WORKDIR</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-resume
+</pre></div>
+</div>
+<p>Submit the job:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>slurm_submit.sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="code-ocean-deployment-aind">
+<h2>Code Ocean Deployment (AIND)<a class="headerlink" href="#code-ocean-deployment-aind" title="Link to this heading"></a></h2>
+<p>For AIND internal use, the pipeline is deployed on Code Ocean with different branches for various configurations:</p>
+<section id="main-branches">
+<h3>Main Branches<a class="headerlink" href="#main-branches" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main</span></code>/<code class="docutils literal notranslate"><span class="pre">co_kilosort4</span></code>: Kilosort4 sorter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">co_kilosort25</span></code>: Kilosort2.5 sorter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">co_spykingcircus2</span></code>: Spyking Circus 2 sorter</p></li>
+</ul>
+</section>
+<section id="optogenetics-branches">
+<h3>Optogenetics Branches<a class="headerlink" href="#optogenetics-branches" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">co_kilosort25_opto</span></code>: Kilosort2.5 with opto artifact removal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">co_kilosort4_opto</span></code>: Kilosort4 with opto artifact removal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">co_spykingcircus2_opto</span></code>: Spyking Circus 2 with opto artifact removal</p></li>
+</ul>
+</section>
+</section>
+<section id="custom-data-ingestion">
+<h2>Custom Data Ingestion<a class="headerlink" href="#custom-data-ingestion" title="Link to this heading"></a></h2>
+<p>To support additional data formats:</p>
+<ol class="arabic simple">
+<li><p>Create a custom job dispatch implementation (see <a class="reference external" href="https://github.com/AllenNeuralDynamics/aind-ephys-job-dispatch/">job dispatch README</a>)</p></li>
+<li><p>Modify <code class="docutils literal notranslate"><span class="pre">main_local.nf</span></code> or <code class="docutils literal notranslate"><span class="pre">main_slurm.nf</span></code> to use your custom job dispatch</p></li>
+<li><p>Update configuration files as needed</p></li>
+</ol>
+<p>This allows for flexible adaptation to different data formats while maintaining the pipeline’s core functionality.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parameters.html" class="btn btn-neutral float-left" title="Pipeline Parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="releases.html" class="btn btn-neutral float-right" title="Releases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, AIND.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
