@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-// hash:sha256:2161b4adc0d3231258a25e9695acba0e7949f3acd4310205e66e95553d0613e0
+// hash:sha256:ea7ab50e53a4b9d84441eed3727c282eab113f9717952bfe147746e43aa8fcff
 
 nextflow.enable.dsl = 1
 
@@ -422,7 +422,7 @@ process capsule_nwb_packaging_subject_capsule_10 {
 // capsule - NWB Packaging Units
 process capsule_nwb_packaging_units_11 {
 	tag 'capsule-7106853'
-	container "$REGISTRY_HOST/capsule/9be90966-938b-4084-8959-4966e9dbb955:195247198c94fb2c321e5b6a83a603cc"
+	container "$REGISTRY_HOST/capsule/9be90966-938b-4084-8959-4966e9dbb955:ebe74ff56827f623ea30ead7cce00756"
 
 	cpus 4
 	memory '32 GB'
@@ -454,7 +454,7 @@ process capsule_nwb_packaging_units_11 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-7106853.git" capsule-repo
-	git -C capsule-repo checkout 15a78df6c393fac5976fdff9ff8c5d04732af5fc --quiet
+	git -C capsule-repo checkout 28f0af24937df9de4c80a5e4c13cf70bab980ce6 --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -470,7 +470,7 @@ process capsule_nwb_packaging_units_11 {
 // capsule - NWB Packaging Ecephys
 process capsule_nwb_packaging_ecephys_capsule_12 {
 	tag 'capsule-5741357'
-	container "$REGISTRY_HOST/capsule/2cfc8f08-1042-4e84-ba44-f33e2a8021a8:2ed7c9f263c3564c5f081e70de88f137"
+	container "$REGISTRY_HOST/capsule/2cfc8f08-1042-4e84-ba44-f33e2a8021a8:e061dbf9f88b082de6c974a25f9cc175"
 
 	cpus 8
 	memory '64 GB'
@@ -499,7 +499,7 @@ process capsule_nwb_packaging_ecephys_capsule_12 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-5741357.git" capsule-repo
-	git -C capsule-repo checkout c9a086c66fe64a84399f4b040d1a2865d2b300e0 --quiet
+	git -C capsule-repo checkout 3fb9d73a4cce8be79dc2e5517961e6374a1f665b --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -544,7 +544,7 @@ process capsule_quality_control_ecephys_13 {
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone "https://\$GIT_ACCESS_TOKEN@\$GIT_HOST/capsule-1934203.git" capsule-repo
-	git -C capsule-repo checkout 90bbfa18fa9fb2145f0bc2dec1e873d026da22c2 --quiet
+	git -C capsule-repo checkout f4475d95fd00f66cb809e570ee2640c31f7d6040 --quiet
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
