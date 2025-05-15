@@ -26,7 +26,7 @@ params_keys = params.keySet()
 if (params.executor == "local") 
 {
 	if ("n_jobs" in params_keys) {
-	n_jobs = params.n_jobs
+		n_jobs = params.n_jobs
 	}
 	else
 	{
@@ -185,7 +185,7 @@ process job_dispatch {
 	path 'capsule/results/*' into job_dispatch_to_nwb_ecephys
 	path 'capsule/results/*' into job_dispatch_to_nwb_units
 	path 'capsule/results/*' into job_dispatch_to_quality_control
-	env max_duration_min
+	env max_duration_minutes
 	
 	script:
 	"""
@@ -210,8 +210,8 @@ process job_dispatch {
 	chmod +x run
 	./run ${job_dispatch_args}
 
-	max_duration_min=\$(python get_max_recording_duration_min.py)
-	echo "Max recording duration in minutes: \$max_duration_min"
+	max_duration_minutes=\$(python get_max_recording_duration_min.py)
+	echo "Max recording duration in minutes: \$max_duration_minutes"
 
 	cd \$TASK_DIR
 
@@ -226,7 +226,7 @@ process preprocessing {
     container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_preprocessing.flatten()
 	path 'capsule/data/ecephys_session' from ecephys_to_preprocessing.collect()
 
@@ -270,7 +270,7 @@ process spikesort_kilosort25 {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from preprocessing_to_spikesort_kilosort25
 
 	output:
@@ -313,7 +313,7 @@ process spikesort_kilosort4 {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from preprocessing_to_spikesort_kilosort4
 
 	output:
@@ -356,7 +356,7 @@ process spikesort_spykingcircus2 {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from preprocessing_to_spikesort_spykingcircus2
 
 	output:
@@ -400,7 +400,7 @@ process postprocessing {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/ecephys_session' from ecephys_to_postprocessing.collect()
 	path 'capsule/data/' from spikesort_to_postprocessing.collect()
 	path 'capsule/data/' from preprocessing_to_postprocessing.collect()
@@ -443,7 +443,7 @@ process curation {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from postprocessing_to_curation
 
 	output:
@@ -482,7 +482,7 @@ process visualization {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_visualization.collect()
 	path 'capsule/data/' from preprocessing_to_visualization
 	path 'capsule/data/' from curation_to_visualization.collect()
@@ -528,7 +528,7 @@ process results_collector {
 	publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_results_collector.collect()
 	path 'capsule/data/' from preprocessing_to_results_collector.collect()
 	path 'capsule/data/' from spikesort_to_results_collector.collect()
@@ -576,7 +576,7 @@ process quality_control {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_quality_control.flatten()
 	path 'capsule/data/' from results_to_quality_control.collect()
 	path 'capsule/data/ecephys_session' from ecephys_to_quality_control.collect()
@@ -618,7 +618,7 @@ process quality_control_collector {
 	publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from quality_control_to_quality_control_collector.collect()
 
 	output:
@@ -657,7 +657,7 @@ process nwb_subject {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/ecephys_session' from ecephys_to_nwb_subject.collect()
 
 	output:
@@ -695,7 +695,7 @@ process nwb_ecephys {
 	container container_name
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_nwb_ecephys.collect()
 	path 'capsule/data/ecephys_session' from ecephys_to_nwb_ecephys.collect()
 	path 'capsule/data/' from nwb_subject_to_nwb_ecephys.collect()
@@ -738,7 +738,7 @@ process nwb_units {
 	publishDir "$RESULTS_PATH/nwb", saveAs: { filename -> new File(filename).getName() }
 
 	input:
-	env max_duration_min
+	env max_duration_minutes
 	path 'capsule/data/' from job_dispatch_to_nwb_units.collect()
 	path 'capsule/data/' from results_collector_to_nwb_units.collect()
 	path 'capsule/data/ecephys_session' from ecephys_to_nwb_units.collect()
