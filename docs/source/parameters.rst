@@ -53,7 +53,7 @@ Preprocessing Parameters
 
 Available motion presets:
    * ``dredge``
-   * ``dredge_fast``
+   * ``dredge_fast`` (default)
    * ``nonrigid_accurate``
    * ``nonrigid_fast_and_accurate``
    * ``rigid_fast``
@@ -100,8 +100,8 @@ Here's an example of running the pipeline with custom parameters:
 
 .. code-block:: bash
 
-   NXF_VER=22.10.8 DATA_PATH=$DATA RESULTS_PATH=$RESULTS \
-   nextflow -C nextflow_local.config run main_local.nf \
+   DATA_PATH=$DATA RESULTS_PATH=$RESULTS \
+   nextflow -C nextflow_local.config run main_multi_backend.nf \
      --n_jobs 16 \
      --sorter kilosort4 \
      --job_dispatch_args "--input spikeglx --debug --debug-duration 120" \

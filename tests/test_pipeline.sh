@@ -1,6 +1,6 @@
 # test pipeline with sample_nwb file
 # DOCKER_IMAGE="ghcr.io/allenneuraldynamics/aind-ephys-pipeline-nwb:si-0.102.1"
-NXF_VERSION="22.10.4"
+NXF_VERSION="25.04.1"
 
 # Check if arguments are passed
 if [ "$#" -gt 0 ]; then
@@ -34,7 +34,7 @@ fi
 
 # define INPUT and OUTPUT directories
 DATA_PATH="$SAMPLE_DATASET_PATH/nwb"
-RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb/results"
+RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb/results_dsl2"
 
 # check if nextflow_local_custom.config exists
 if [ -f "$PIPELINE_PATH/pipeline/nextflow_local_custom.config" ]; then
