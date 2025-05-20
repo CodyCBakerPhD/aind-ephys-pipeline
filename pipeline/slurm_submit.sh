@@ -22,7 +22,7 @@ else
 fi
 echo "Using config file: $CONFIG_FILE"
 
-NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow \
+DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow \
     -C $CONFIG_FILE \
     -log $RESULTS_PATH/nextflow/nextflow.log \
     run $PIPELINE_PATH/pipeline/main_multi_backend.nf \
