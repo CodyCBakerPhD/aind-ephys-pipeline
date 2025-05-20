@@ -283,7 +283,7 @@ process spikesort_kilosort4 {
 
 process spikesort_spykingcircus2 {
     tag 'spikesort-spykingcircus2'
-    def container_name = "ghcr.io/allenneuraldynamics/aind-ephys-spikesort-spykingcircus2:${params.container_tag}"
+    def container_name = "ghcr.io/allenneuraldynamics/aind-ephys-pipeline-base:${params.container_tag}"
     container container_name
 
     input:
