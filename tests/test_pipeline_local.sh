@@ -34,7 +34,7 @@ fi
 
 # define INPUT and OUTPUT directories
 DATA_PATH="$SAMPLE_DATASET_PATH/nwb"
-RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb/results"
+RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb_results"
 
 # check if nextflow_local_custom.config exists
 if [ -f "$PIPELINE_PATH/pipeline/nextflow_local_custom.config" ]; then

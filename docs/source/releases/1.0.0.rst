@@ -20,7 +20,8 @@ Package versions
 Bug fixes
 ---------
 * Additional fixes for NWB export with multi-shanks and multi-groups
-* (TODO) Fix remapping of preprocessed and postprocessd data in result collector
+* Fix remapping of preprocessed and postprocessd data in result collector
+* Fix output results: from symlinks to copy
 
 New features
 ------------

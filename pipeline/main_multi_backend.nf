@@ -500,7 +500,7 @@ process results_collector {
     def container_name = "ghcr.io/allenneuraldynamics/aind-ephys-pipeline-base:${params.container_tag}"
     container container_name
 
-    publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
+    publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }, mode: 'copy'
 
     input:
     val max_duration_minutes
@@ -539,8 +539,8 @@ process results_collector {
 
     echo "[${task.tag}] running capsule..."
     cd capsule/code
-    chmod +x run
-    ./run
+    chmod +x run 
+    ./run --pipeline-data-path ${DATA_PATH} --pipeline-results-path ${RESULTS_PATH}
 
     echo "[${task.tag}] completed!"
     """
@@ -594,7 +594,7 @@ process quality_control_collector {
     def container_name = "ghcr.io/allenneuraldynamics/aind-ephys-pipeline-base:${params.container_tag}"
     container container_name
 
-    publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
+    publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }, mode: 'copy'
 
     input:
     val max_duration_minutes
@@ -721,7 +721,7 @@ process nwb_units {
     def container_name = "ghcr.io/allenneuraldynamics/aind-ephys-pipeline-nwb:${params.container_tag}"
     container container_name
 
-    publishDir "$RESULTS_PATH/nwb", saveAs: { filename -> new File(filename).getName() }
+    publishDir "$RESULTS_PATH/nwb", saveAs: { filename -> new File(filename).getName() }, mode: 'copy'
 
     input:
     val max_duration_minutes

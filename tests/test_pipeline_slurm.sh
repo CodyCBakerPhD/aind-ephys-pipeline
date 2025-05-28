@@ -54,11 +54,18 @@ fi
 
 # define INPUT and OUTPUT directories
 DATA_PATH="$SAMPLE_DATASET_PATH/nwb"
-RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb/results"
+RESULTS_PATH="$SAMPLE_DATASET_PATH/nwb_results"
+
+# check if nextflow_local_custom.config exists
+if [ -f "$PIPELINE_PATH/pipeline/nextflow_slurm_custom.config" ]; then
+    CONFIG_FILE="$PIPELINE_PATH/pipeline/nextflow_slurm_custom.config"
+else
+    CONFIG_FILE="$PIPELINE_PATH/pipeline/nextflow_slurm.config"
+fi
+echo "Using config file: $CONFIG_FILE"
 
 # run pipeline
 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow \
-    -C $PIPELINE_PATH/pipeline/nextflow_slurm_custom.config \
-    -log $RESULTS_PATH/nextflow/nextflow.log \
-    run $PIPELINE_PATH/pipeline/main_slurm.nf \
+    -C $CONFIG_FILE -log $RESULTS_PATH/nextflow/nextflow.log \
+    run $PIPELINE_PATH/pipeline/main_multi_backend.nf \
     --sorter kilosort4 --job_dispatch_args "--input nwb"
