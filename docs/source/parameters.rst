@@ -9,11 +9,34 @@ The pipeline accepts several global parameters that control its overall behavior
 .. code-block:: bash
 
    --n_jobs N_JOBS                 Number of parallel jobs (for local deployment)
-   --sorter {kilosort25,kilosort4,spykingcircus2}   Spike sorter selection
    --runmode {full,fast}          Processing mode ('fast' skips some steps like motion correction)
+   --sorter {kilosort25,kilosort4,spykingcircus2}   Spike sorter selection
 
-Process-Specific Parameters
----------------------------
+
+Parameter File
+--------------
+
+A parameter file can be used to set all parameters at once.
+This is the recommended way to configure the pipeline, especially for complex setups.
+The parameter file should be in JSON format and you can use the ``pipeline/default_params.json`` file as a template.
+
+To use a parameter file, specify it with the ``--params_file`` option:
+
+.. code-block:: bash
+
+   --params_file PATH_TO_PARAMS_FILE
+   # Example: --params_file pipeline/default_params.json
+
+Note that the parameter file will override any command line parameters specified.
+
+.. note::
+
+   In the ``spikesorting`` section of the parameter file, you can specify the sorter and its parameters.
+   The ``sorter`` field, if specified and not null, will override the command line ``--sorter`` parameter.
+
+
+Process-Specific Command Line Arguments
+---------------------------------------
 
 Each pipeline step can be configured with specific parameters using the format:
 
@@ -103,8 +126,8 @@ NWB Ecephys Parameters
      --lfp_highpass_freq_min F # LFP highpass filter cutoff (Hz)
    "
 
-Example Usage
--------------
+Example Usage of CLI Arguments
+------------------------------
 
 Here's an example of running the pipeline with custom parameters:
 

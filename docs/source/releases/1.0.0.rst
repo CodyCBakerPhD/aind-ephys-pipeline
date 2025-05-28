@@ -9,11 +9,8 @@ The main changes in this release are:
 
 * Update to DSL2 over DSL1 for nextflow scripts
 * Unification of pipeline script for multiple backends (``main_multi_backend.nf``)
-
-TODO:
+* Possibility to use a single JSON file for parameters
 * Addition of ``spikeinterface`` input type (which supports any SpikeInterface-supported format)
-* Support for multi-session processing
-* Option to use a main ``parameters.json`` file for all pipeline parameters`
 
 Package versions
 ----------------

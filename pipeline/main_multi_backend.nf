@@ -2,9 +2,18 @@
 nextflow.enable.dsl = 2
 
 params.ecephys_path = DATA_PATH
+params.params_file = null
 
 println "DATA_PATH: ${DATA_PATH}"
 println "RESULTS_PATH: ${RESULTS_PATH}"
+
+// Load parameters from JSON file if provided
+def json_params = [:]
+if (params.params_file) {
+    json_params = new groovy.json.JsonSlurper().parseText(new File(params.params_file).text)
+    println "Loaded parameters from ${params.params_file}"
+}
+
 println "PARAMS: ${params}"
 
 // get commit hashes for capsules
@@ -41,15 +50,6 @@ else {
     job_args=""
 }
 
-// set sorter
-if ("sorter" in params_keys) {
-    sorter = params.sorter
-}
-else {
-    sorter = "kilosort4"
-}
-println "Using SORTER: ${sorter}"
-
 // set runmode
 if ("runmode" in params_keys) {
     runmode = params.runmode
@@ -59,42 +59,84 @@ else {
 }
 println "Using RUNMODE: ${runmode}"
 
-if (!params_keys.contains('job_dispatch_args')) {
-    job_dispatch_args = ""
+if (params.params_file) {
+    println "Using parameters from JSON file: ${params.params_file}"
+} else {
+    println "No parameters file provided, using command line arguments."
 }
-else {
+
+// Initialize args variables with params from JSON file or command line args
+def job_dispatch_args = ""
+if (params.params_file && json_params.job_dispatch) {
+    job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
+} else if (params.job_dispatch_args) {
     job_dispatch_args = params.job_dispatch_args
 }
-if (!params_keys.contains('preprocessing_args')) {
-    preprocessing_args = ""
-}
-else {
+
+def preprocessing_args = ""
+if (params.params_file && json_params.preprocessing) {
+    preprocessing_args = "--params '${groovy.json.JsonOutput.toJson(json_params.preprocessing)}'"
+} else if (params.preprocessing_args) {
     preprocessing_args = params.preprocessing_args
 }
-if (!params_keys.contains('spikesorting_args')) {
-    spikesorting_args = ""
-}
-else {
-    spikesorting_args = params.spikesorting_args
-}
-if (!params_keys.contains('postprocessing_args')) {
-    postprocessing_args = ""
-}
-else {
+
+def postprocessing_args = ""
+if (params.params_file && json_params.postprocessing) {
+    postprocessing_args = "--params '${groovy.json.JsonOutput.toJson(json_params.postprocessing)}'"
+} else if (params.postprocessing_args) {
     postprocessing_args = params.postprocessing_args
 }
-if (!params_keys.contains('nwb_subject_args')) {
-    nwb_subject_args = ""
+
+def curation_args = ""
+if (params.params_file && json_params.curation) {
+    curation_args = "--params '${groovy.json.JsonOutput.toJson(json_params.curation)}'"
+} else if (params.curation_args) {
+    curation_args = params.curation_args
 }
-else {
+
+def visualization_kwargs = ""
+if (params.params_file && json_params.visualization) {
+    visualization_kwargs = "--params '${groovy.json.JsonOutput.toJson(json_params.visualization)}'"
+} else if (params.visualization_kwargs) {
+    visualization_kwargs = params.visualization_kwargs
+}
+
+def nwb_subject_args = ""
+if (params.params_file && json_params.nwb?.backend) {
+    nwb_subject_args = "--backend ${json_params.nwb.backend}"
+} else if (params.nwb_subject_args) {
     nwb_subject_args = params.nwb_subject_args
 }
-if (!params_keys.contains('nwb_ecephys_args')) {
-    nwb_ecephys_args = ""
-}
-else {
+
+def nwb_ecephys_args = ""
+if (params.params_file && json_params.nwb?.ecephys) {
+    nwb_ecephys_args = "--params '${groovy.json.JsonOutput.toJson(json_params.nwb.ecephys)}'"
+} else if (params.nwb_ecephys_args) {
     nwb_ecephys_args = params.nwb_ecephys_args
 }
+
+
+// For spikesorting, use the parameters for the selected sorter
+def sorter = null
+if (params.params_file && json_params.spikesorting) {
+    sorter = json_params.spikesorting.sorter ?: null
+}
+
+if (sorter == null && "sorter" in params_keys) {
+    sorter = params.sorter ?: "kilosort4"
+}
+
+def spikesorting_args = ""
+if (params.params_file && json_params.spikesorting) {
+    def sorter_params = json_params.spikesorting[sorter]
+    if (sorter_params) {
+        spikesorting_args = "--params '${groovy.json.JsonOutput.toJson(sorter_params)}'"
+    }
+} else if (params.spikesorting_args) {
+    spikesorting_args = params.spikesorting_args
+}
+
+println "Using SORTER: ${sorter} with args: ${spikesorting_args}"
 
 if (runmode == 'fast'){
     preprocessing_args = "--motion skip"
@@ -401,7 +443,7 @@ process curation {
     echo "[${task.tag}] running capsule..."
     cd capsule/code
     chmod +x run
-    ./run
+    ./run ${curation_args} ${job_args}
 
     echo "[${task.tag}] completed!"
     """
@@ -447,7 +489,7 @@ process visualization {
     echo "[${task.tag}] running capsule..."
     cd capsule/code
     chmod +x run
-    ./run
+    ./run ${visualization_kwargs}
 
     echo "[${task.tag}] completed!"
     """
