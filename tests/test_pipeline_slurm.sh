@@ -68,4 +68,4 @@ echo "Using config file: $CONFIG_FILE"
 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow \
     -C $CONFIG_FILE -log $RESULTS_PATH/nextflow/nextflow.log \
     run $PIPELINE_PATH/pipeline/main_multi_backend.nf \
-    --sorter kilosort4 --job_dispatch_args "--input nwb"
+    --params_file params_test.json $ARGS
