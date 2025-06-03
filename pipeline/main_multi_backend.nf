@@ -69,66 +69,51 @@ if (params.params_file) {
 def job_dispatch_args = ""
 if (params.params_file && json_params.job_dispatch) {
     job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
-} else if (params.job_dispatch_args) {
+} else if ("job_dispatch_args" in params_keys) {
     job_dispatch_args = params.job_dispatch_args
-} else {
-    job_dispatch_args = ""
 }
 
 def preprocessing_args = ""
 if (params.params_file && json_params.preprocessing) {
     preprocessing_args = "--params '${groovy.json.JsonOutput.toJson(json_params.preprocessing)}'"
-} else if (params.preprocessing_args) {
+} else if ("preprocessing_args" in params_keys) {
     preprocessing_args = params.preprocessing_args
-} else {
-    preprocessing_args = ""
 }
 
 def postprocessing_args = ""
 if (params.params_file && json_params.postprocessing) {
     postprocessing_args = "--params '${groovy.json.JsonOutput.toJson(json_params.postprocessing)}'"
-} else if (params.postprocessing_args) {
+} else if ("postprocessing_args" in params_keys) {
     postprocessing_args = params.postprocessing_args
-} else {
-    postprocessing_args = ""
 }
 
 def curation_args = ""
 if (params.params_file && json_params.curation) {
     curation_args = "--params '${groovy.json.JsonOutput.toJson(json_params.curation)}'"
-} else if (params.curation_args) {
+} else if ("curation_args" in params_keys) {
     curation_args = params.curation_args
-} else {
-    curation_args = ""
 }
 
 def visualization_kwargs = ""
 if (params.params_file && json_params.visualization) {
     visualization_kwargs = "--params '${groovy.json.JsonOutput.toJson(json_params.visualization)}'"
-} else if (params.visualization_kwargs) {
+} else if ("visualization_kwargs") {
     visualization_kwargs = params.visualization_kwargs
-} else {
-    visualization_kwargs = ""
 }
 
 def nwb_subject_args = ""
 if (params.params_file && json_params.nwb?.backend) {
     nwb_subject_args = "--backend ${json_params.nwb.backend}"
-} else if (params.nwb_subject_args) {
+} else if ("nwb_subject_args") {
     nwb_subject_args = params.nwb_subject_args
-} else {
-    nwb_subject_args = ""
 }
 
 def nwb_ecephys_args = ""
 if (params.params_file && json_params.nwb?.ecephys) {
     nwb_ecephys_args = "--params '${groovy.json.JsonOutput.toJson(json_params.nwb.ecephys)}'"
-} else if (params.nwb_ecephys_args) {
+} else if ("nwb_ecephys_args") {
     nwb_ecephys_args = params.nwb_ecephys_args
-} else {
-    nwb_ecephys_args = ""
 }
-
 
 // For spikesorting, use the parameters for the selected sorter
 def sorter = null
@@ -146,12 +131,10 @@ if (params.params_file && json_params.spikesorting) {
     if (sorter_params) {
         spikesorting_args = "--params '${groovy.json.JsonOutput.toJson(sorter_params)}'"
     }
-} else if (params.spikesorting_args) {
+} else if ("spikesorting_args" in params_keys) {
     spikesorting_args = params.spikesorting_args
 }
-else {
-    spikesorting_args = ""
-}
+
 
 println "Using SORTER: ${sorter} with args: ${spikesorting_args}"
 

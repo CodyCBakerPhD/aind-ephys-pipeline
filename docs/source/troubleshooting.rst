@@ -7,8 +7,8 @@ This section provides solutions to common issues encountered while using the AIN
 If you encounter a problem not listed here, please consider opening an issue on our GitHub repository.
 
 
-NUMBA failure in curation
--------------------------
+``RuntimeError: cannot cache function`` NUMBA failure in curation
+-----------------------------------------------------------------
 
 The curation step may fail because NUMBA cannot cache the compiled functions to the location where the 
 Python environment is installed. This can happen if the environment is installed in a read-only location, such as a 
