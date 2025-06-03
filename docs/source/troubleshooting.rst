@@ -17,32 +17,28 @@ Singularity/Apptainer container.
 To resolve this issue, you can create a folder where your user has write access and set the environment variable 
 ``NUMBA_CACHE_DIR`` to it. 
 
-Hugging Face cache issue: ``OSError: Read-only file system``
-------------------------------------------------------------
-
-The curation step may also fail because the Hugging Face cache is located in a read-only file system, 
-such as a Singularity/Apptainer container.
-
-Similarly to the NUMBA cache issue, you can set the environment variable ``HF_HUB_CACHE`` to a folder where your user has write access. 
-
-
-Matplotlib cache issue: ``OSError: Read-only file system``
-----------------------------------------------------------
-
-The cache issue can also occur with Matplotlib, which may try to write to a read-only file system
-in the visualization step.
-
-Again, you can set the environment variable ``MPLCONFIGDIR`` to a folder where your user has write access. 
-
-
 .. note::
 
     To make these changes persistent, you can add the following lines to your ``.bashrc`` or ``.bash_profile`` file:
     .. code-block:: bash
 
         export NUMBA_CACHE_DIR=/path/to/your/cache/dir
-        export HF_HUB_CACHE=/path/to/your/cache/dir
-        export MPLCONFIGDIR=/path/to/your/cache/dir
 
-    The three environment variables are already in the singularity ``envWhiteList`` of the `nextflow_slurm.config <>`_ 
+    This environment variables are already in the singularity ``envWhiteList`` of the 
+    `nextflow_slurm.config <https://github.com/AllenNeuralDynamics/aind-ephys-pipeline/blob/main/pipeline/nextflow_slurm.config#L120>`_ 
     file, so they will be automatically used automatically if defined.
+
+``OSError: Read-only file system`` error
+----------------------------------------
+
+The curation and visualization steps may also fail because of similar caching issues.
+In this case, the easiest solution is to bind your home directory to the container, so that the
+pipeline can write to a folder in your home directory.
+
+You can do this by simply uncommenting the 
+`this line <https://github.com/AllenNeuralDynamics/aind-ephys-pipeline/blob/main/pipeline/nextflow_slurm.config#L14>`_ 
+in the ``nextflow_slurm.config`` file:
+
+.. code-block:: bash
+
+    // containerOptions = "--bind \$HOME:\$HOME"
