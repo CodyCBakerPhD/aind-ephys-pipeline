@@ -97,21 +97,21 @@ if (params.params_file && json_params.curation) {
 def visualization_kwargs = ""
 if (params.params_file && json_params.visualization) {
     visualization_kwargs = "--params '${groovy.json.JsonOutput.toJson(json_params.visualization)}'"
-} else if ("visualization_kwargs") {
+} else if ("visualization_kwargs" in params_keys) {
     visualization_kwargs = params.visualization_kwargs
 }
 
 def nwb_subject_args = ""
 if (params.params_file && json_params.nwb?.backend) {
     nwb_subject_args = "--backend ${json_params.nwb.backend}"
-} else if ("nwb_subject_args") {
+} else if ("nwb_subject_args" in params_keys) {
     nwb_subject_args = params.nwb_subject_args
 }
 
 def nwb_ecephys_args = ""
 if (params.params_file && json_params.nwb?.ecephys) {
     nwb_ecephys_args = "--params '${groovy.json.JsonOutput.toJson(json_params.nwb.ecephys)}'"
-} else if ("nwb_ecephys_args") {
+} else if ("nwb_ecephys_args" in params_keys) {
     nwb_ecephys_args = params.nwb_ecephys_args
 }
 
