@@ -42,19 +42,13 @@ Local Setup
 
 3. (Optional) Set up Figurl:
 
-   a. Install kachery:
-
-   .. code-block:: bash
-
-      pip install kachery
-
-   b. Initialize Kachery Client:
+   a. Initialize Kachery Client:
 
       i. Register at `kachery.vercel.app <https://kachery.vercel.app/>`_ using your GitHub account.
       ii. Go to settings and provide your name, an email address and a short description of your research purpose.
-      iii. Set the `KACHERY_API_KEY`` environment variable with your assigned API key.
+      iii. Set the ``KACHERY_API_KEY`` environment variable with your assigned API key.
 
-   c. Set credentials:
+   b. Set credentials:
       
       * Click on settings and generate a new API key.
       * Set environment variables:
