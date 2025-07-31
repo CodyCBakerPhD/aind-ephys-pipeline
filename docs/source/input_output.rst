@@ -21,6 +21,11 @@ NWB
 * Input folder should contain a single NWB file
 * Supports both HDF5 and Zarr backends
 
+SpikeInterface
+~~~~~~~~~~~~~~
+* Input folder should contain a SpikeInterface recording object
+* The ``spikeinterface_info`` parameter can be used to specify the recording type and additional parameters
+
 AIND
 ~~~~
 * Used for AIND-specific data ingestion
@@ -29,6 +34,7 @@ AIND
       * ``ecephys_clipped/`` (clipped Open Ephys folder)
       * ``ecephys_compressed/`` (compressed traces with Zarr)
    * JSON files following `aind-data-schema <https://aind-data-schema.readthedocs.io/en/latest/>`_ specification
+
 
 Pipeline Output
 ---------------

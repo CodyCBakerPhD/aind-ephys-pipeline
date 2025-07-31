@@ -50,7 +50,7 @@ Job Dispatch Parameters
 .. code-block:: bash
 
    --job_dispatch_args "
-     --concatenate             # Whether to concatenate recordings (segments) or not. Default: False
+     --no-split-segments       # Whether to concatenate or split recording segments or not. Default: split segments
      --no-split-groups         # Whether to process different groups separately. Default: split groups
      --debug                   # Whether to run in DEBUG mode. Default: False
      --debug-duration DURATION # Duration of clipped recording in debug mode. Only used if debug is enabled. Default: 30 seconds
