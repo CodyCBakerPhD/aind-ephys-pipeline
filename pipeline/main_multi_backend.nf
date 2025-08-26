@@ -128,6 +128,10 @@ if (params.params_file && json_params.spikesorting) {
     spikesorting_args = params.spikesorting_args
 }
 
+if (sorter == null) {
+    println "No sorter specified, defaulting to kilosort4"
+    sorter = "kilosort4"
+}
 
 println "Using SORTER: ${sorter} with args: ${spikesorting_args}"
 
