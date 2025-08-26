@@ -101,13 +101,6 @@ if (params.params_file && json_params.visualization) {
     visualization_kwargs = params.visualization_kwargs
 }
 
-def nwb_subject_args = ""
-if (params.params_file && json_params.nwb?.backend) {
-    nwb_subject_args = "--backend ${json_params.nwb.backend}"
-} else if ("nwb_subject_args" in params_keys) {
-    nwb_subject_args = params.nwb_subject_args
-}
-
 def nwb_ecephys_args = ""
 if (params.params_file && json_params.nwb?.ecephys) {
     nwb_ecephys_args = "--params '${groovy.json.JsonOutput.toJson(json_params.nwb.ecephys)}'"
@@ -682,7 +675,6 @@ process nwb_ecephys {
     val max_duration_minutes
     path ecephys_session_input, stageAs: 'capsule/data/ecephys_session'
     path job_dispatch_results, stageAs: 'capsule/data/*'
-    path nwb_subject_results, stageAs: 'capsule/data/*'
 
     output:
     path 'capsule/results/*', emit: results
@@ -851,18 +843,11 @@ workflow {
         quality_control_out.results.collect()
     )
 
-    // NWB subject
-    nwb_subject_out = nwb_subject(
-        max_duration_minutes,
-        ecephys_ch.collect()
-    )
-
     // NWB ecephys
     nwb_ecephys_out = nwb_ecephys(
         max_duration_minutes,
         ecephys_ch.collect(),
         job_dispatch_out.results.collect(),
-        nwb_subject_out.results.collect()
     )
 
     // NWB units

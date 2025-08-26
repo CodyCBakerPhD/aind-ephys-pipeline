@@ -18,7 +18,6 @@ The pipeline is based on [Nextflow](https://www.nextflow.io/) and it includes th
 - [visualization](https://github.com/AllenNeuralDynamics/aind-ephys-visualization/): timeseries, drift maps, and sorting output in [figurl](https://github.com/flatironinstitute/figurl/blob/main/README.md)
 - [result collection](https://github.com/AllenNeuralDynamics/aind-ephys-result-collector/): this step collects the output of all parallel jobs and copies the output folders to the results folder
 - export to NWB: creates NWB output files. Each file can contain multiple streams (e.g., probes), but only a continuous chunk of data (such as an Open Ephys experiment+recording or an NWB `ElectricalSeries`). This step includes additional sub-steps:
-  - [session and subject](https://github.com/AllenNeuralDynamics/aind-subject-nwb)
   - [ecephys](https://github.com/AllenNeuralDynamics/aind-ecephys-nwb)
   - [units](https://github.com/AllenNeuralDynamics/aind-units-nwb)
 

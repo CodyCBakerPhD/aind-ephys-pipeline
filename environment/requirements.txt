@@ -1,4 +1,4 @@
-spikeinterface==0.102.3
+spikeinterface==0.103.0
 pyvips==2.2.1
 torch==2.6.0
 pynwb==2.8.2
@@ -11,3 +11,4 @@ seaborn==0.13.2
 aind-data-schema==1.3.0
 aind-qcportal-schema==0.4.0
 aind-metadata-upgrader==0.0.24
+aind-nwb-utils==0.1.0
