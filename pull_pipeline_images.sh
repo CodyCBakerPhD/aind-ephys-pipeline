@@ -100,9 +100,9 @@ esac
 for img in "${IMAGES[@]}"; do
   echo "[pull] $img:$TAG"
   if command -v singularity >/dev/null 2>&1; then
-    singularity pull "docker://$img:$TAG" || true
+    singularity pull --dir "$CACHE_DIR" "docker://$img:$TAG" || true
   elif command -v apptainer >/dev/null 2>&1; then
-    apptainer pull "docker://$img:$TAG" || true
+    apptainer pull --dir "$CACHE_DIR" "docker://$img:$TAG" || true
   else
     echo "ERROR: neither singularity nor apptainer found in PATH" >&2
     exit 127
