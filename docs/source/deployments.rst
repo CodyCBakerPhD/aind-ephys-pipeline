@@ -61,15 +61,15 @@ Configuration
        -work-dir $WORKDIR \
        -resume
 
-5. (Optional) Pre-build required Singularity images for faster startup:
+5. (Optional) Pre-build required Apptainer/Singularity/Apptainer images for faster startup:
 
 .. code-block:: bash
 
    ./pull_pipeline_images.sh --sorter kilosort4
 
-This will pull and build the necessary Singularity images for the Kilosort4 sorter. Adjust the ``--sorter`` argument as
+This will pull and build the necessary Apptainer/Singularity images for the Kilosort4 sorter. Adjust the ``--sorter`` argument as
 needed (e.g., to ``kilosort25`` or ``spykingcircus2`` or ``all``).
-Note that this step requires you to set the ``NXF_SINGULARITY_CACHEDIR`` environment variable to a directory with 
+Note that this step requires you to set the ``NXF_APPTAINER_CACHEDIR``/``NXF_SINGULARITY_CACHEDIR`` environment variable to a directory with 
 enough space to store the images. Images used by the nextflow script will be cached automatically if not pre-built.
 
 1. Submit the pipeline job:
