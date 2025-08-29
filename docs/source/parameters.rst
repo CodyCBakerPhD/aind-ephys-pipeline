@@ -50,7 +50,7 @@ Job Dispatch Parameters
 .. code-block:: bash
 
    --job_dispatch_args "
-     --concatenate             # Whether to concatenate recordings (segments) or not. Default: False
+     --no-split-segments       # Whether to concatenate or split recording segments or not. Default: split segments
      --no-split-groups         # Whether to process different groups separately. Default: split groups
      --debug                   # Whether to run in DEBUG mode. Default: False
      --debug-duration DURATION # Duration of clipped recording in debug mode. Only used if debug is enabled. Default: 30 seconds
@@ -80,8 +80,10 @@ Preprocessing Parameters
      --max-bad-channel-fraction FRACTION # Max fraction of bad channels
      --motion {skip,compute,apply}       # Motion correction mode
      --motion-preset PRESET              # Motion correction preset
+     --motion-temporal-bin-s             # Temporal bin size (seconds)
      --t-start START                     # Recording start time (seconds)
      --t-stop STOP                       # Recording stop time (seconds)
+     --min-duration DURATION             # Minimum recording duration (seconds) to run preprocessing
    "
 
 Available motion presets:
@@ -104,14 +106,6 @@ Spike Sorting Parameters
      --clear-cache               # Force PyTorch memory cleanup (Kilosort4)
    "
 
-NWB Subject Parameters
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   --nwb_subject_args "
-     --backend {hdf5,zarr}      # NWB backend selection
-   "
 
 NWB Ecephys Parameters
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -119,6 +113,7 @@ NWB Ecephys Parameters
 .. code-block:: bash
 
    --nwb_ecephys_args "
+     --backend {pynwb,hdmf}    # Backend to use for NWB writing (if pipeline 'input' is not NWB)
      --skip-lfp                # Skip LFP electrical series
      --write-raw               # Write RAW electrical series
      --lfp_temporal_factor N   # Temporal subsampling factor
