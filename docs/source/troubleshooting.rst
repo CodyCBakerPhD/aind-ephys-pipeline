@@ -42,3 +42,12 @@ in the ``nextflow_slurm.config`` file:
 .. code-block:: bash
 
     // containerOptions = "--bind \$HOME:\$HOME"
+
+
+``OSError: Unable to synchronously open file``
+----------------------------------------------
+
+This error can occur when using NWB with HDF5 backend as input to the pipeline on a filesystem that does not support file locking, such as
+NFS or certain cloud storage solutions (mainly SLURM clusters).
+
+To resolve this issue, you can set the environment variable ``HDF5_USE_FILE_LOCKING`` to ``FALSE``.
