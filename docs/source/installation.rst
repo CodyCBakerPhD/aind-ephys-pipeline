@@ -87,6 +87,7 @@ Clone the pipeline repository:
 .. code-block:: bash
 
    git clone https://github.com/AllenNeuralDynamics/aind-ephys-pipeline.git
-   cd aind-ephys-pipeline/pipeline
+   cd aind-ephys-pipeline
+   cd pipeline
 
 The pipeline is now ready to be configured and run on your chosen platform.
