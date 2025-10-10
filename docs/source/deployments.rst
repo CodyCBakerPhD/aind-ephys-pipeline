@@ -24,7 +24,8 @@ Configuration
 .. code-block:: bash
 
    git clone https://github.com/AllenNeuralDynamics/aind-ephys-pipeline.git
-   cd aind-ephys-pipeline/pipeline
+   cd aind-ephys-pipeline
+   cd pipeline
 
 2. Copy and modify the SLURM configuration:
 
@@ -98,7 +99,8 @@ Running Locally
 .. code-block:: bash
 
    git clone https://github.com/AllenNeuralDynamics/aind-ephys-pipeline.git
-   cd aind-ephys-pipeline/pipeline
+   cd aind-ephys-pipeline
+   cd pipeline
 
 2. Run the pipeline:
 
