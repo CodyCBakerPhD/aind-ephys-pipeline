@@ -44,8 +44,8 @@ Configuration
    #SBATCH --nodes=1
    #SBATCH --ntasks-per-node=1
    #SBATCH --mem=4GB
-   #SBATCH --time=2:00:00
    #SBATCH --partition={your-partition}
+   #SBATCH --time=2:00:00
 
    # Load required environment (if nextflow is installed in a conda environment)
    conda activate env_nf
