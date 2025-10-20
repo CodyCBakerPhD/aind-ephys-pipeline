@@ -31,7 +31,7 @@ Configuration
 
 .. code-block:: bash
 
-   cp pipeline/nextflow_slurm.config pipeline/nextflow_slurm_custom.config
+   cp nextflow_slurm.config nextflow_slurm_custom.config
 
 3. Update the ``params.default_queue`` and ``params.gpu_queue`` parameters in ``nextflow_slurm_custom.config`` to match your cluster's partitions.
    The latter is only needed if different than the default queue.
