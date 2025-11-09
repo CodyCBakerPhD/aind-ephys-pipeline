@@ -432,8 +432,9 @@ process curation {
     fi
 
     echo "[${task.tag}] cloning git repo..."
-    git clone "https://github.com/AllenNeuralDynamics/aind-ephys-curation.git" capsule-repo
-    git -C capsule-repo -c core.fileMode=false checkout ${versions['CURATION']} --quiet
+    git clone "https://github.com/CodyCBakerPhD/aind-ephys-curation.git" capsule-repo
+    git -C capsule-repo checkout  engaging_fixes
+    #git -C capsule-repo -c core.fileMode=false checkout ${versions['CURATION']} --quiet
     mv capsule-repo/code capsule/code
     rm -rf capsule-repo
 
