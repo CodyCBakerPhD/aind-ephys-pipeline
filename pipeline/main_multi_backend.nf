@@ -306,8 +306,9 @@ process spikesort_kilosort4 {
     fi
 
     echo "[${task.tag}] cloning git repo..."
-    git clone "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-kilosort4.git" capsule-repo
-    git -C capsule-repo -c core.fileMode=false checkout ${versions['SPIKESORT_KS4']} --quiet
+    git clone "https://github.com/CodyCBakerPhD/aind-ephys-spikesort-kilosort4.git" capsule-repo
+    git -C capsule-repo checkout engaging_fixes
+    #git -C capsule-repo -c core.fileMode=false checkout ${versions['SPIKESORT_KS4']} --quiet
     mv capsule-repo/code capsule/code
     rm -rf capsule-repo
 
