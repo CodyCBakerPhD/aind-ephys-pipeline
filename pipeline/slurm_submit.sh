@@ -6,6 +6,10 @@
 #SBATCH --time=2:00:00
 #SBATCH --output /orcd/data/dandi/001/test_aind/logs/aind-%j.log
 
+# NOTE: Ensure that the `~./bashrc` (irrespective of `$HOME` reroutes) on the MIT Engaging user has a
+# `NUMBA_CACHE_DIR` set to an existing, persistent directory
+# (the target of the directory can respect `$HOME` reroute, or be a designated location)
+
 # modify this section to make the nextflow command available to your environment
 # e.g., using a conda environment with nextflow installed
 source /etc/profile.d/modules.sh
