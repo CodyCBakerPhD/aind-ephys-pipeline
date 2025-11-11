@@ -1,30 +1,40 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=4GB
-#SBATCH --partition={your-partition}
+#SBATCH --mem=8GB
+#SBATCH --partition=mit_normal_gpu
 #SBATCH --time=2:00:00
+#SBATCH --output /orcd/data/dandi/001/test_aind/logs/aind-%j.log
+
+# NOTE: Ensure that the `~./bashrc` (irrespective of `$HOME` reroutes) on the MIT Engaging user has a
+# `NUMBA_CACHE_DIR` set to an existing, persistent directory
+# (the target of the directory can respect `$HOME` reroute, or be a designated location)
 
 # modify this section to make the nextflow command available to your environment
 # e.g., using a conda environment with nextflow installed
-conda activate env_nf
+source /etc/profile.d/modules.sh
+module load miniforge
+module load apptainer
 
-PIPELINE_PATH="path-to-your-cloned-repo"
-DATA_PATH="path-to-data-folder"
-RESULTS_PATH="path-to-results-folder"
-WORKDIR="path-to-workdir-folder"
+conda activate /orcd/data/dandi/001/env_nf
 
-# check if nextflow_local_custom.config exists
-if [ -f "$PIPELINE_PATH/pipeline/nextflow_slurm_custom.config" ]; then
-    CONFIG_FILE="$PIPELINE_PATH/pipeline/nextflow_slurm_custom.config"
-else
-    CONFIG_FILE="$PIPELINE_PATH/pipeline/nextflow_slurm.config"
-fi
-echo "Using config file: $CONFIG_FILE"
+DANDI_DIR="/orcd/data/dandi/001"
+BASE_DIR="$DANDI_DIR/test_aind"
+
+PIPELINE_PATH="$BASE_DIR/aind-ephys-pipeline.source"
+DATA_PATH="$BASE_DIR/sample_data/data"
+RESULTS_PATH="$BASE_DIR/results"
+WORKDIR="$BASE_DIR/work"
+NUMBA_CACHE_DIR="$WORKDIR/numba_cache"
+NXF_APPTAINER_CACHEDIR="$WORKDIR/apptainer_cache"
+HF_HOME="$WORKDIR/hugging_face_cache"
+
+CONFIG_FILE="$BASE_DIR/nextflow_slurm_custom.config"
 
 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow \
     -C $CONFIG_FILE \
     -log $RESULTS_PATH/nextflow/nextflow.log \
     run $PIPELINE_PATH/pipeline/main_multi_backend.nf \
-    -work-dir $WORKDIR
-    # additional parameters here
+    --work-dir $WORKDIR \
+    --job_dispatch_args "--input nwb"
+#    --params_file "$PIPELINE_PATH/.github/workflows/params_test.json"
