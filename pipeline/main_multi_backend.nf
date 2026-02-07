@@ -422,6 +422,9 @@ process curation {
     #!/usr/bin/env bash
     set -e
 
+    echo "[${task.tag}] Received max_duration_minutes: '${max_duration_minutes}'"
+    echo "[${task.tag}] Type check: \$(echo '${max_duration_minutes}' | wc -c) characters"
+
     mkdir -p capsule
     mkdir -p capsule/data
     mkdir -p capsule/results
@@ -766,7 +769,7 @@ workflow {
     job_dispatch_out = job_dispatch(ecephys_ch.collect())
 
     max_duration_file = job_dispatch_out.max_duration_file
-    max_duration_minutes = max_duration_file.map { it.text.trim() }
+    max_duration_minutes = max_duration_file.map { it.text.trim() }.collect()
     max_duration_minutes.view { "Max recording duration: ${it}min" }
 
     // Preprocessing
