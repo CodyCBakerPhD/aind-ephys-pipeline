@@ -769,7 +769,7 @@ workflow {
     job_dispatch_out = job_dispatch(ecephys_ch.collect())
 
     max_duration_file = job_dispatch_out.max_duration_file
-    max_duration_minutes = max_duration_file.map { it.text.trim() }.first()
+    max_duration_minutes = max_duration_file.map { it.text.trim() }.toList().map { it[0] }
     max_duration_minutes.view { "Max recording duration: ${it}min" }
 
     // Preprocessing
