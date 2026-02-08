@@ -813,7 +813,7 @@ workflow {
                 "  [$idx] ${item.class.name}: ${item}"
             }.join('\n')
     }
-    curation_postprocessing_input = postprocessing_out.results.collect().map {
+    curation_postprocessing_input = postprocessing_collected.map {
         list -> list.findAll { it.name.startsWith('postprocessed') }
     }
 
