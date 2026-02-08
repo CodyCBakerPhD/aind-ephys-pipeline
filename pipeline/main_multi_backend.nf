@@ -813,7 +813,7 @@ workflow {
                 "  [$idx] ${item.class.name}: ${item}"
             }.join('\n')
     }
-    postprocessing_collected = postprocessing_out.results.collect().map {
+    curation_postprocessing_input = postprocessing_out.results.collect().map {
         list -> list.findAll { it.name.startsWith('postprocessed') }
     }
 
@@ -821,7 +821,7 @@ workflow {
     // Curation
     curation_out = curation(
         max_duration_minutes,
-        postprocessing_collected
+        curation_postprocessing_input
     )
 
     // Visualization
