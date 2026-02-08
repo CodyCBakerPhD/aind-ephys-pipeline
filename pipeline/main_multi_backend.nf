@@ -90,7 +90,7 @@ if (params.params_file && json_params.postprocessing) {
 def curation_args = ""
 if (params.params_file && json_params.curation) {
     curation_args = "--params '${groovy.json.JsonOutput.toJson(json_params.curation)}'"
-} else if ("curation_args" in params_keys) {
+} else if ("curation_args" in params_keys && params.visualization_kwargs instanceof String) {
     curation_args = params.curation_args
 }
 
@@ -807,15 +807,16 @@ workflow {
         spikesort_out.results.collect()
     )
 
-    postprocessing_out.results.view { file ->
-        "[postprocessing results] ${file.class.name}: ${file}"
-    }
     postprocessing_collected = postprocessing_out.results.collect().view { list ->
             "[postprocessing collected] Total items: ${list.size()}\n" +
             list.withIndex().collect { item, idx ->
                 "  [$idx] ${item.class.name}: ${item}"
             }.join('\n')
     }
+    postprocessing_collected = postprocessing_out.results.collect().map {
+        list -> list.findAll { it.name.startsWith('postprocessed') }
+    }
+
 
     // Curation
     curation_out = curation(
