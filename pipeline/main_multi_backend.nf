@@ -90,7 +90,7 @@ if (params.params_file && json_params.postprocessing) {
 def curation_args = ""
 if (params.params_file && json_params.curation) {
     curation_args = "--params '${groovy.json.JsonOutput.toJson(json_params.curation)}'"
-} else if ("curation_args" in params_keys && params.curation_args instanceof String) {
+} else if ("curation_args" in params_keys) {
     curation_args = params.curation_args
 }
 
