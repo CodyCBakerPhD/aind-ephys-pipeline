@@ -807,10 +807,20 @@ workflow {
         spikesort_out.results.collect()
     )
 
+    postprocessing_out.results.view { file ->
+        "[postprocessing results] ${file.class.name}: ${file}"
+    }
+    postprocessing_collected = postprocessing_out.results.collect().view { list ->
+            "[postprocessing collected] Total items: ${list.size()}\n" +
+            list.withIndex().collect { item, idx ->
+                "  [$idx] ${item.class.name}: ${item}"
+            }.join('\n')
+    }
+
     // Curation
     curation_out = curation(
         max_duration_minutes,
-        postprocessing_out.results
+        postprocessing_collected
     )
 
     // Visualization
