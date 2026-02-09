@@ -429,9 +429,6 @@ process curation {
     #!/usr/bin/env bash
     set -e
 
-    echo "[${task.tag}] Received max_duration_minutes: '${max_duration_minutes}'"
-    echo "[${task.tag}] Type check: \$(echo '${max_duration_minutes}' | wc -c) characters"
-
     mkdir -p capsule
     mkdir -p capsule/data
     mkdir -p capsule/results
@@ -805,13 +802,13 @@ workflow {
 //     curation_postprocessing_input = postprocessing_collected.map {
 //         list -> list.findAll { it.name.startsWith('postprocessed') }
 //     }
-    curation_postprocessing_input = postprocessing_out.results.flatten().filter { it.name.startsWith('postprocessed') }
+//     curation_postprocessing_input = postprocessing_out.results.flatten().filter { it.name.startsWith('postprocessed') }
 
 
     // Curation
     curation_out = curation(
         max_duration_minutes,
-        curation_postprocessing_input.results
+        postprocessing_out.results
     )
 
     // Visualization
