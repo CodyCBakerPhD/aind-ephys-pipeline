@@ -760,7 +760,7 @@ workflow {
     job_dispatch_out = job_dispatch(ecephys_ch.collect())
 
     max_duration_file = job_dispatch_out.max_duration_file
-    max_duration_minutes = max_duration_file.map { file -> new String(file.text).trim() }
+    max_duration_minutes = max_duration_file.map { it.text.trim() }
     max_duration_minutes.view { "Max recording duration: ${it}min" }
 
     // Preprocessing
@@ -811,7 +811,7 @@ workflow {
     // Curation
     curation_out = curation(
         max_duration_minutes,
-        curation_postprocessing_input
+        curation_postprocessing_input.results
     )
 
     // Visualization
