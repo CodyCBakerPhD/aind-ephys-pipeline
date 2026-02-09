@@ -90,7 +90,7 @@ if (params.params_file && json_params.postprocessing) {
 def curation_args = ""
 if (params.params_file && json_params.curation) {
     curation_args = "--params '${groovy.json.JsonOutput.toJson(json_params.curation)}'"
-} else if ("curation_args" in params_keys && params.visualization_kwargs instanceof String) {
+} else if ("curation_args" in params_keys && params.curation_args instanceof String) {
     curation_args = params.curation_args
 }
 
@@ -769,7 +769,7 @@ workflow {
     job_dispatch_out = job_dispatch(ecephys_ch.collect())
 
     max_duration_file = job_dispatch_out.max_duration_file
-    max_duration_minutes = max_duration_file.map { it.text.trim() }.toList().map { it[0] }
+    max_duration_minutes = max_duration_file.map { file -> file.text.trim() }
     max_duration_minutes.view { "Max recording duration: ${it}min" }
 
     // Preprocessing
@@ -807,11 +807,9 @@ workflow {
         spikesort_out.results.collect()
     )
 
-    postprocessing_collected = postprocessing_out.results.collect().view { list ->
-            "[postprocessing collected] Total items: ${list.size()}\n" +
-            list.withIndex().collect { item, idx ->
-                "  [$idx] ${item.class.name}: ${item}"
-            }.join('\n')
+    postprocessing_collected = postprocessing_out.results.collect().view {
+        list -> "[postprocessing collected] Total items: ${list.size()}\n" +
+        list.withIndex().collect { item, idx ->"  [$idx] ${item.class.name}: ${item}"}.join('\n')
     }
     curation_postprocessing_input = postprocessing_collected.map {
         list -> list.findAll { it.name.startsWith('postprocessed') }
