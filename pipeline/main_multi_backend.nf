@@ -92,7 +92,7 @@ if (params.params_file && json_params.job_dispatch) {
     job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
 }
 if ("job_dispatch_args" in params_keys && params.job_dispatch_args instanceof String) {
-    println "CLI arguments detected for job dispatch: ${params.params.job_dispatch_args}"
+    println "CLI arguments detected for job dispatch: ${params.job_dispatch_args}"
     println "Adding to existing job dispatch args: ${job_dispatch_args}"
     job_dispatch_args += params.job_dispatch_args
 }
