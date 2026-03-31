@@ -87,15 +87,20 @@ if (params.params_file) {
 
 // Build job_dispatch params: start from file, merge CLI overrides, stringify once
 def job_dispatch_map = json_params.job_dispatch ? new LinkedHashMap(json_params.job_dispatch) : [:]
-println "Initial `job_dispatch_map`: ${job_dispatch_map}"
-params_keys.each { key ->
-    if (key.startsWith("job_dispatch_") && key != "job_dispatch_args") {
-        job_dispatch_map[key.substring("job_dispatch_".length())] = params[key]
+println "Initial job_dispatch_map`: ${job_dispatch_map}"
+if ("job_dispatch_args" in params_keys && params.job_dispatch_args instanceof String) {
+    def cli_tokens = params.job_dispatch_args.trim().split(/\s+/) as List
+    for (int i = 0; i < cli_tokens.size(); i++) {
+        if (cli_tokens[i].startsWith('--')) {
+            def key = cli_tokens[i].substring(2).replace('-', '_')
+            def value = (i + 1 < cli_tokens.size() && !cli_tokens[i + 1].startsWith('--')) ? cli_tokens[++i] : true
+            job_dispatch_map[key] = value
+        }
     }
 }
-println "`job_dispatch_map` after parsing `params`: ${job_dispatch_map}"
+println "`job_dispatch_map` after merging CLI args: ${job_dispatch_map}"
 def job_dispatch_args = job_dispatch_map ? "--params '${groovy.json.JsonOutput.toJson(job_dispatch_map)}'" : ""
-println "Final `job_dispatch_args`: ${job_dispatch_args}"
+println "Final job_dispatch_args: ${job_dispatch_args}"
 
 def preprocessing_args = ""
 if (params.params_file && json_params.preprocessing) {
