@@ -88,11 +88,15 @@ if (params.params_file) {
 // Initialize args variables with params from JSON file or command line args
 def job_dispatch_args = ""
 if (params.params_file && json_params.job_dispatch) {
+    println "Parameter file provided job dispatch parameters: ${json_params.job_dispatch}"
     job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
 }
 if ("job_dispatch_args" in params_keys && params.job_dispatch_args instanceof String) {
-    job_dispatch_args += " ${params.job_dispatch_args}"
+    println "CLI arguments detected for job dispatch: ${params.params.job_dispatch_args}"
+    println "Adding to existing job dispatch args: ${job_dispatch_args}"
+    job_dispatch_args += params.job_dispatch_args
 }
+println "Final job dispatch args: ${job_dispatch_args}"
 
 def preprocessing_args = ""
 if (params.params_file && json_params.preprocessing) {
