@@ -84,12 +84,32 @@ if (params.params_file) {
     println "No parameters file provided, using command line arguments."
 }
 
-// Initialize args variables with params from JSON file or command line args
+// Initialize job_dispatch args: start from params file dict, merge CLI overrides, then stringify
+def job_dispatch_dict = json_params.job_dispatch ? new LinkedHashMap(json_params.job_dispatch) : [:]
+def job_dispatch_extra_flags = []
+def job_dispatch_prefix = "job_dispatch_"
+params_keys.each { key ->
+    if (key.startsWith(job_dispatch_prefix) && key != "job_dispatch_args") {
+        def subkey = key.substring(job_dispatch_prefix.length())
+        def value = params[key]
+        if (subkey in job_dispatch_dict) {
+            println "Overriding job_dispatch.${subkey} with CLI value: ${value}"
+            job_dispatch_dict[subkey] = value
+        } else {
+            def flag = "--" + subkey.replace('_', '-')
+            println "Adding extra job_dispatch flag: ${flag} ${value}"
+            job_dispatch_extra_flags.add("${flag} ${value}")
+        }
+    }
+}
 def job_dispatch_args = ""
-if (params.params_file && json_params.job_dispatch) {
-    job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
+if (job_dispatch_dict) {
+    job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(job_dispatch_dict)}'"
 } else if ("job_dispatch_args" in params_keys && params.job_dispatch_args instanceof String) {
     job_dispatch_args = params.job_dispatch_args
+}
+if (job_dispatch_extra_flags) {
+    job_dispatch_args = "${job_dispatch_args} ${job_dispatch_extra_flags.join(' ')}"
 }
 
 def preprocessing_args = ""
