@@ -85,18 +85,14 @@ if (params.params_file) {
     println "No parameters file provided, using command line arguments."
 }
 
-// Initialize args variables with params from JSON file or command line args
-def job_dispatch_args = ""
-if (params.params_file && json_params.job_dispatch) {
-    println "Parameter file provided job dispatch parameters: ${json_params.job_dispatch}"
-    job_dispatch_args = "--params '${groovy.json.JsonOutput.toJson(json_params.job_dispatch)}'"
+// Build job_dispatch params: start from file, merge CLI overrides, stringify once
+def job_dispatch_map = json_params.job_dispatch ? new LinkedHashMap(json_params.job_dispatch) : [:]
+params_keys.each { key ->
+    if (key.startsWith("job_dispatch_") && key != "job_dispatch_args") {
+        job_dispatch_map[key.substring("job_dispatch_".length())] = params[key]
+    }
 }
-if ("job_dispatch_args" in params_keys && params.job_dispatch_args instanceof String) {
-    println "CLI arguments detected for job dispatch: ${params.job_dispatch_args}"
-    println "Adding to existing job dispatch args: ${job_dispatch_args}"
-    job_dispatch_args += params.job_dispatch_args
-}
-println "Final job dispatch args: ${job_dispatch_args}"
+def job_dispatch_args = job_dispatch_map ? "--params '${groovy.json.JsonOutput.toJson(job_dispatch_map)}'" : ""
 
 def preprocessing_args = ""
 if (params.params_file && json_params.preprocessing) {
