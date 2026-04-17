@@ -42,7 +42,7 @@ Each pipeline step can be configured with specific parameters using the format:
 
 .. code-block:: bash
 
-   --{step_name}_args "{args}"
+   --{step_name}_args="{args}"
 
 Job Dispatch Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,6 +66,11 @@ Job Dispatch Parameters
                                  - 5. probe_paths (optional): string or dict the probe paths to a ProbeInterface JSON file (e.g. '/path/to/probe.json'). If a dict is provided, the key is the stream name and the value is the probe path. If reader_kwargs is not provided, the reader will be created with default parameters. The probe_path is required if the reader doesn't load the probe automatically.
 
    "
+
+.. note::
+
+   If the reader needs extra packages installed, specify them in the ``EXTRA_INSTALLS`` variable in the ``capsule_versions.env`` file 
+   (e.g. ``EXTRA_INSTALLS="mtscomp"``).
 
 Preprocessing Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,9 +137,9 @@ Here's an example of running the pipeline with custom parameters:
    nextflow -C nextflow_local.config run main_multi_backend.nf \
      --n_jobs 16 \
      --sorter kilosort4 \
-     --job_dispatch_args "--input spikeglx --debug --debug-duration 120" \
-     --preprocessing_args "--motion compute --motion-preset nonrigid_fast_and_accurate" \
-     --nwb_ecephys_args "--skip-lfp"
+     --job_dispatch_args="--input spikeglx --debug --debug-duration 120" \
+     --preprocessing_args="--motion compute --motion-preset nonrigid_fast_and_accurate" \
+     --nwb_ecephys_args="--skip-lfp"
 
 This example:
    * Runs 16 parallel jobs
