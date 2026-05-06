@@ -20,26 +20,33 @@ RUN apt-get update \
 # install default fonts
 RUN apt-get install -y fonts-freefont-ttf
 
-# 2. Create user
-RUN useradd -m -u 1000 pipelineuser
+# 2. Install Python packages as root so they land in the system (conda) site-packages,
+#    accessible to any user regardless of UID at runtime.
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip && \
+    grep -E 'aind-data-schema|aind-metadata-upgrader|aind-qcportal-schema|pyvips|wavpack-numcodecs|pynwb|hdmf-zarr|torch|hdbscan|s3fs|seaborn|scikit-learn|neo|scipy' /tmp/requirements.txt | xargs pip install
 
-# 3. Setup work area
+RUN SPIKEINTERFACE_VERSION=$(grep '^spikeinterface==' /tmp/requirements.txt | cut -d'=' -f3) && \
+    pip install "spikeinterface[full,widgets]==${SPIKEINTERFACE_VERSION}"
+
+# 3. Redirect cache dirs to a writable location (numba, matplotlib, huggingface).
+#    Numba defaults to caching next to the .py source files, which live in the
+#    root-owned conda site-packages and are not writable when the container is
+#    run with --user $(id -u):$(id -g) (UID != 1000).
+ENV NUMBA_CACHE_DIR=/tmp/numba_cache
+ENV MPLCONFIGDIR=/tmp/matplotlib_cache
+ENV HF_HOME=/tmp/huggingface_cache
+
+# 4. Create non-root user for runtime, with home dir writable by any UID.
+#    This lets tools that write to ~/.something (kachery, huggingface tokens,
+#    pip caches, etc.) work even when the container is launched with
+#    --user $(id -u):$(id -g) where the host UID isn't in /etc/passwd and
+#    HOME would otherwise fall back to '/'.
+RUN useradd -m -u 1000 pipelineuser && chmod 777 /home/pipelineuser
+ENV HOME=/home/pipelineuser
+
+# 5. Setup work area
 WORKDIR /home/pipelineuser
 
-# 4. Copy requirements AND change ownership so the user can read it
-COPY --chown=pipelineuser:pipelineuser requirements.txt .
-
-# 5. Switch user
+# 6. Switch to non-root user
 USER pipelineuser
-
-# 6. Update PATH so the user-installed pip/packages are found
-ENV PATH="/home/pipelineuser/.local/bin:${PATH}"
-
-# 7. Install Python packages
-RUN pip install --upgrade pip && \
-    grep -E 'aind-data-schema|aind-metadata-upgrader|aind-qcportal-schema|pyvips|wavpack-numcodecs|pynwb|hdmf-zarr|torch|hdbscan|s3fs|seaborn|scikit-learn|neo|scipy' requirements.txt | xargs pip install
-
-# 8. Extract the spikeinterface version and install with extras
-RUN pip install --upgrade pip && \
-    SPIKEINTERFACE_VERSION=$(grep '^spikeinterface==' requirements.txt | cut -d'=' -f3) && \
-    pip install "spikeinterface[full,widgets]==${SPIKEINTERFACE_VERSION}"

@@ -2,26 +2,25 @@ FROM spikeinterface/kilosort4-base:4.0.38_cuda-12.0.0
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# 1. Create user
-RUN useradd -m -u 1000 pipelineuser
+# 1. Install Python packages as root so they land in the system site-packages,
+#    accessible to any user regardless of UID at runtime.
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip && \
+    grep -E 'aind-data-schema|scipy' /tmp/requirements.txt | xargs pip install
 
-# 2. Setup work area
+RUN SPIKEINTERFACE_VERSION=$(grep '^spikeinterface==' /tmp/requirements.txt | cut -d'=' -f3) && \
+    pip install "spikeinterface[full]==${SPIKEINTERFACE_VERSION}"
+
+# 2. Redirect numba's JIT cache to a writable location (see Dockerfile_base for context).
+ENV NUMBA_CACHE_DIR=/tmp/numba_cache
+
+# 3. Create non-root user for runtime, with home dir writable by any UID
+#    (see Dockerfile_base for context).
+RUN useradd -m -u 1000 pipelineuser && chmod 777 /home/pipelineuser
+ENV HOME=/home/pipelineuser
+
+# 4. Setup work area
 WORKDIR /home/pipelineuser
 
-# 3. Copy requirements AND change ownership so the user can read it
-COPY --chown=pipelineuser:pipelineuser requirements.txt .
-
-# 4. Switch user
+# 5. Switch to non-root user
 USER pipelineuser
-
-# 5. Update PATH so the user-installed pip/packages are found
-ENV PATH="/home/pipelineuser/.local/bin:${PATH}"
-
-# 6. Install Python packages
-RUN pip install --upgrade pip && \
-    grep -E 'aind-data-schema|scipy' requirements.txt | xargs pip install
-
-# 7 .Extract the spikeinterface version and install with extras
-RUN pip install --upgrade pip && \
-    SPIKEINTERFACE_VERSION=$(grep '^spikeinterface==' requirements.txt | cut -d'=' -f3) && \
-    pip install "spikeinterface[full]==${SPIKEINTERFACE_VERSION}"
